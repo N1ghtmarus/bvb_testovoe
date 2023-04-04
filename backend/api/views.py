@@ -44,7 +44,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
         department = self.request.query_params.get('department', None)
         if department is not None:
             return queryset.filter(department__name=department)
-      
+
         full_name = self.request.query_params.get('full_name', None)
         if full_name is not None:
             return queryset.filter(full_name=full_name)
