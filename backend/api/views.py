@@ -19,12 +19,10 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self) -> list:
         """
-        Возвращает список разрешений для действия.
+        Возвращает список прав доступа,
+        необходимых для выполнения текущего запроса.
 
-        При запросе методом GET требуется аутентификация пользователя,
-        при других запросах требуется проверка на администратора.
-
-        :return: список разрешений.
+        :return: Список прав доступа
         """
         if self.request.method == 'GET':
             return [IsAuthenticated()]
@@ -82,15 +80,30 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
 
 class DepartmentViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet для управления департаментами.
+    """
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
 
     def get_permissions(self) -> list:
+        """
+        Возвращает список прав доступа,
+        необходимых для выполнения текущего запроса.
+
+        :return: Список прав доступа
+        """
         if self.request.method == 'GET':
             return [AllowAny()]
         return [IsAdminUser()]
 
     def get_queryset(self) -> QuerySet:
+        """
+        Возвращает QuerySet департаментов с
+        дополнительными полями "num_employees" и "total_salary".
+
+        :return: QuerySet департаментов
+        """
         queryset = Department.objects.all()
         for department in queryset:
             department.num_employees = department.num_employees()

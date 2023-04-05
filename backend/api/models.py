@@ -37,7 +37,6 @@ class Employee(models.Model):
     full_name = models.CharField(max_length=100, db_index=True)
     photo = models.ImageField(
         upload_to='employee_photos/%Y/%m/%d/',
-        null=True,
         blank=True
     )
     position = models.CharField(max_length=100)
