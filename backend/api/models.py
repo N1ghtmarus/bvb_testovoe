@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models import Sum
-from decimal import Decimal
 
 
 class Department(models.Model):
@@ -21,20 +19,17 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
-    def total_salary(self):
-        """
-        Метод для подсчета общей зарплаты всех сотрудников департамента.
-        """
-        return self.employees.aggregate(
-            total_salary=Sum('salary')
-        )['total_salary'] or Decimal('0.00')
-
-    def num_employees(self):
-        return self.employees.count()
-
 
 class Employee(models.Model):
-    full_name = models.CharField(max_length=100, db_index=True)
+    name = models.CharField(
+        max_length=50, blank=True, null=True, db_index=True
+        )
+    surname = models.CharField(
+        max_length=50, blank=True, null=True, db_index=True
+        )
+    patronymic = models.CharField(
+        max_length=50, blank=True, null=True
+        )
     photo = models.ImageField(
         upload_to='employee_photos/%Y/%m/%d/',
         blank=True
@@ -53,8 +48,8 @@ class Employee(models.Model):
     class Meta:
         verbose_name = 'Сотрудник'
         verbose_name_plural = 'Сотрудники'
-        ordering = ['full_name']
-        unique_together = ['department', 'full_name']
+        ordering = ['surname']
+        unique_together = ['department', 'name', 'surname', 'patronymic']
 
     def __str__(self):
-        return self.full_name
+        return f'{self.name}, {self.patronymic}, {self.surname}'

@@ -21,6 +21,7 @@ class DepartmentAdmin(admin.ModelAdmin):
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = [
-        'id', 'full_name', 'position', 'salary', 'age', 'department']
+        'id', 'name', 'surname', 'patronymic',
+        'position', 'salary', 'age', 'department']
     list_filter = ['department']
-    search_fields = ['full_name']
+    search_fields = ['surname']

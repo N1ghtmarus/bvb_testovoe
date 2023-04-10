@@ -9,7 +9,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = [
             'id',
-            'full_name',
+            'surname',
+            'name',
+            'patronymic',
             'photo',
             'position',
             'salary',
@@ -20,9 +22,10 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 class DepartmentSerializer(serializers.ModelSerializer):
     director = EmployeeSerializer()
+    employees = EmployeeSerializer(many=True, read_only=True)
     num_employees = serializers.ReadOnlyField()
     total_salary = serializers.ReadOnlyField()
 
     class Meta:
         model = Department
-        fields = '__all__'
+        fields = ['id', 'num_employees', 'total_salary', 'director', 'employees']
